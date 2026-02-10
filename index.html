@@ -5,88 +5,80 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verificación de Certificados</title>
     <style>
+        /* ESTILOS GENERALES (Para que se vea igual a la web original) */
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #00564d; /* Verde institucional */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh; /* Usar min-height para evitar cortes en pantallas pequeñas */
+            padding: 0;
+            font-family: 'Roboto', sans-serif; /* Fuente estándar */
+            background-color: #0f5f54; /* Verde oscuro exacto */
             color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* CONTENEDOR PRINCIPAL */
+        .container {
+            width: 100%;
+            max-width: 450px;
             padding: 20px;
             box-sizing: border-box;
-        }
-
-        .container {
             text-align: center;
-            width: 100%;
-            max-width: 400px;
+            margin-top: 50px;
         }
 
-        /* Estilos del Logo */
-        .logo-container {
+        /* LOGO */
+        .logo-img {
+            max-width: 200px; /* Tamaño del logo */
             margin-bottom: 30px;
-            text-align: center;
-        }
-        .logo-container img {
-            max-width: 250px; /* Tamaño controlado del logo */
-            width: 80%;
-            height: auto;
-            display: inline-block;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        h2 {
-            font-weight: normal;
+        /* TÍTULO */
+        h1 {
             font-size: 18px;
+            font-weight: 400;
             margin-bottom: 40px;
-            color: #a8dcd6;
+            color: #d1e8e5; /* Color grisáceo/verde claro del texto */
         }
 
-        /* Botón Validar */
+        /* BOTÓN VALIDAR */
         .btn-validar {
-            background-color: #ff9100;
+            background-color: #ff9900; /* Naranja */
             color: white;
             border: none;
-            padding: 12px 0;
-            width: 150px;
+            padding: 12px 40px;
             font-size: 16px;
             font-weight: bold;
             border-radius: 4px;
             cursor: pointer;
-            margin-bottom: 25px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            width: 160px;
         }
-        .btn-validar:hover {
-            background-color: #e68200;
-        }
-
-        /* Botón Volver (Estilo secundario) */
-        .btn-volver {
-            background-color: #00564d;
-            color: white;
-            border: 1px solid white;
-            padding: 10px 0;
-            width: 100%;
-            font-size: 14px;
-            font-weight: bold;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 20px;
+        
+        .btn-validar:active {
+            background-color: #e68a00;
         }
 
-        /* reCAPTCHA Simulado */
-        .recaptcha-box {
-            background-color: #f9f9f9;
-            border: 1px solid #d3d3d3;
+        /* RECAPTCHA (Diseño exacto visual) */
+        .recaptcha-container {
+            background-color: #ffffff;
+            width: 300px; /* Ancho estándar de recaptcha */
+            height: 74px;
             border-radius: 3px;
-            padding: 12px;
+            border: 1px solid #d3d3d3;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            width: 280px;
-            margin: 0 auto;
-            box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+            padding: 0 12px;
+            margin: 0 auto; /* Centrado */
+            box-sizing: border-box;
         }
 
         .recaptcha-left {
@@ -94,12 +86,12 @@
             align-items: center;
         }
 
-        .checkbox-container {
+        .checkbox-box {
             width: 24px;
             height: 24px;
             border: 2px solid #c1c1c1;
             border-radius: 2px;
-            background-color: white;
+            background-color: #fff;
             margin-right: 12px;
             cursor: pointer;
             display: flex;
@@ -107,222 +99,236 @@
             justify-content: center;
         }
 
-        .checkbox-container.checked {
-            border-color: #009688;
-            border: none; /* Quita borde gris al marcar */
+        .checkbox-box.checked {
+            border: none;
         }
 
         .checkmark {
             display: none;
-            color: #009688;
-            font-size: 28px; /* Check más grande */
-            line-height: 24px;
+            width: 28px;
+            height: 28px;
         }
+        
+        /* Spinner de carga simulado */
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            animation: spin 1s linear infinite;
+            display: none;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        .recaptcha-label {
-            color: black;
-            font-size: 14px;
+        .recaptcha-text {
+            color: #000;
             font-family: Roboto, Arial, sans-serif;
+            font-size: 14px;
+            font-weight: 400;
         }
 
-        .recaptcha-logo {
+        .recaptcha-right {
             display: flex;
             flex-direction: column;
             align-items: center;
-            text-align: right;
+            margin-right: 2px;
         }
 
-        .recaptcha-logo img {
+        .recaptcha-logo-img {
             width: 32px;
+            height: 32px;
             opacity: 0.7;
+            margin-bottom: 2px;
         }
 
         .recaptcha-terms {
             font-size: 8px;
             color: #555;
-            margin-top: 2px;
             text-align: center;
-            line-height: 1.2;
+            line-height: 10px;
         }
 
-        /* Pantalla de Resultados */
-        #resultado-screen {
-            display: none; /* Oculto por defecto */
-            text-align: left;
-            background-color: white;
-            color: #333;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-
-        /* Logo dentro de resultados (fondo blanco requiere ajuste si el logo es blanco) */
-        #resultado-screen .logo-container {
-            background-color: #00564d; /* Fondo verde para que se vea el logo si es blanco */
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
-
-        #resultado-screen h3 {
-            color: #00564d;
-            border-bottom: 3px solid #ff9100;
-            padding-bottom: 10px;
-            margin-top: 0;
-            text-align: center;
-            text-transform: uppercase;
-        }
-
-        .dato-row {
-            margin-bottom: 15px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 8px;
-        }
-
-        .dato-label {
-            font-weight: bold;
-            font-size: 11px;
-            color: #888;
-            display: block;
-            text-transform: uppercase;
-            margin-bottom: 2px;
-        }
-
-        .dato-value {
-            font-size: 15px;
-            color: #000;
-            font-weight: 500;
-        }
-
+        /* MENSAJE DE ERROR */
         .error-msg {
             color: #ffcccc;
             font-size: 13px;
             margin-top: 15px;
             display: none;
-            background-color: rgba(255, 0, 0, 0.2);
-            padding: 5px;
-            border-radius: 4px;
+        }
+
+        /* --- PANTALLA 2: RESULTADOS (Oculta al principio) --- */
+        #pantalla-resultados {
+            display: none;
+            background-color: white; /* Fondo blanco para los datos */
+            width: 100%;
+            min-height: 100vh; /* Ocupa toda la pantalla */
+            color: #333;
+            padding-top: 40px;
+            box-sizing: border-box;
+        }
+
+        .resultados-content {
+            width: 90%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Logo en pantalla de resultados (fondo verde para que resalte si es blanco) */
+        .header-resultados {
+            background-color: #0f5f54;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .titulo-valido {
+            color: #0f5f54;
+            border-bottom: 3px solid #ff9900;
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            text-align: center;
+            text-transform: uppercase;
+            font-size: 20px;
+        }
+
+        .dato-fila {
+            border-bottom: 1px solid #eee;
+            padding: 15px 0;
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+
+        .dato-label {
+            font-size: 12px;
+            color: #888;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .dato-valor {
+            font-size: 16px;
+            color: #000;
+            font-weight: 500;
         }
 
     </style>
 </head>
 <body>
 
-    <div class="container">
+    <div id="pantalla-inicio" class="container">
         
-        <div id="validacion-screen">
-            <div class="logo-container">
-                <img src="santo.jpeg" alt="Logo Institución">
-            </div>
+        <img src="santo.jpeg" alt="Santo Tomás" class="logo-img">
 
-            <h2>Verificación de certificados de egreso</h2>
+        <h1>Verificación de certificados de egreso</h1>
 
-            <button class="btn-validar" onclick="validar()">VALIDAR</button>
+        <button class="btn-validar" onclick="intentarValidar()">VALIDAR</button>
 
-            <div class="recaptcha-box">
-                <div class="recaptcha-left">
-                    <div class="checkbox-container" id="captcha-box" onclick="toggleCaptcha()">
-                        <span class="checkmark">✔</span>
-                    </div>
-                    <span class="recaptcha-label">No soy un robot</span>
+        <div class="recaptcha-container">
+            <div class="recaptcha-left">
+                <div class="checkbox-box" id="check-box" onclick="activarCaptcha()">
+                    <div class="spinner" id="spinner"></div>
+                    <img src="https://www.gstatic.com/recaptcha/api2/checkmark.png" class="checkmark" id="checkmark" alt="Check">
                 </div>
-                <div class="recaptcha-logo">
-                    <img src="https://www.gstatic.com/recaptcha/api2/logo_48.png" alt="reCAPTCHA">
-                    <div class="recaptcha-terms">reCAPTCHA<br>Privacidad - Términos</div>
-                </div>
+                <span class="recaptcha-text">No soy un robot</span>
             </div>
-            <div id="error-msg" class="error-msg">⚠ Por favor, verifica que no eres un robot.</div>
+            <div class="recaptcha-right">
+                <img src="https://www.gstatic.com/recaptcha/api2/logo_48.png" class="recaptcha-logo-img" alt="Logo">
+                <div class="recaptcha-terms">reCAPTCHA<br>Privacidad - Términos</div>
+            </div>
         </div>
 
-        <div id="resultado-screen">
-            <div class="logo-container">
-                <img src="santo.jpeg" alt="Logo Institución">
+        <div id="mensaje-error" class="error-msg">Por favor, completa el captcha.</div>
+    </div>
+
+
+    <div id="pantalla-resultados">
+        <div class="resultados-content">
+            
+            <div class="header-resultados">
+                <img src="santo.jpeg" alt="Santo Tomás" style="max-width: 180px;">
             </div>
 
-            <h3>Certificado Válido</h3>
-            
-            <div class="dato-row">
+            <h2 class="titulo-valido">Certificado Válido</h2>
+
+            <div class="dato-fila">
                 <span class="dato-label">Nombre</span>
-                <span class="dato-value">DAVID LEOPOLDO MARAMBIO GONZÁLEZ</span>
+                <span class="dato-valor">DAVID LEOPOLDO MARAMBIO GONZÁLEZ</span>
             </div>
 
-            <div class="dato-row">
+            <div class="dato-fila">
                 <span class="dato-label">RUT</span>
-                <span class="dato-value">17.849.454-6</span>
+                <span class="dato-valor">17.849.454-6</span>
             </div>
 
-            <div class="dato-row">
+            <div class="dato-fila">
                 <span class="dato-label">Año de Egreso</span>
-                <span class="dato-value">2024</span>
+                <span class="dato-valor">2024</span>
             </div>
 
-            <div class="dato-row">
+            <div class="dato-fila">
                 <span class="dato-label">Sede</span>
-                <span class="dato-value">PUENTE ALTO</span>
+                <span class="dato-valor">PUENTE ALTO</span>
             </div>
 
-            <div class="dato-row">
+            <div class="dato-fila">
                 <span class="dato-label">Carrera</span>
-                <span class="dato-value">TÉCNICO EN ENFERMERÍA</span>
+                <span class="dato-valor">TÉCNICO EN ENFERMERÍA</span>
             </div>
 
-            <div class="dato-row">
+            <div class="dato-fila">
                 <span class="dato-label">Nota Final</span>
-                <span class="dato-value">6.5</span>
+                <span class="dato-valor">6.5</span>
             </div>
 
-            <div class="dato-row">
+            <div class="dato-fila">
                 <span class="dato-label">Modalidad</span>
-                <span class="dato-value">PRESENCIAL</span>
+                <span class="dato-valor">PRESENCIAL</span>
             </div>
-            
-            <button class="btn-volver" onclick="location.reload()">NUEVA CONSULTA</button>
+
+            <button class="btn-validar" style="width: 100%; margin-top: 30px;" onclick="location.reload()">VOLVER</button>
+
         </div>
     </div>
 
     <script>
-        let captchaChecked = false;
+        let captchaEstaListo = false;
 
-        function toggleCaptcha() {
-            const box = document.getElementById('captcha-box');
-            const checkmark = box.querySelector('.checkmark');
-            const errorMsg = document.getElementById('error-msg');
-            
-            if (!captchaChecked) {
-                // Efecto visual de carga
-                document.body.style.cursor = 'wait';
-                box.style.borderColor = '#c1c1c1';
+        function activarCaptcha() {
+            if (!captchaEstaListo) {
+                // Muestra spinner de carga
+                document.getElementById('spinner').style.display = 'block';
                 
-                setTimeout(() => {
-                    captchaChecked = true;
-                    box.classList.add('checked');
-                    checkmark.style.display = 'block';
-                    document.body.style.cursor = 'default';
-                    errorMsg.style.display = 'none';
-                }, 500); // 0.5 segundos de "pensando"
+                // Espera 1 segundo simulando carga
+                setTimeout(function() {
+                    document.getElementById('spinner').style.display = 'none';
+                    document.getElementById('checkmark').style.display = 'block'; // Muestra el check
+                    document.getElementById('check-box').classList.add('checked'); // Quita borde
+                    document.getElementById('mensaje-error').style.display = 'none'; // Quita error si había
+                    captchaEstaListo = true;
+                }, 800);
             }
         }
 
-        function validar() {
-            const errorMsg = document.getElementById('error-msg');
-            if (captchaChecked) {
-                // Transición suave
-                document.getElementById('validacion-screen').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('validacion-screen').style.display = 'none';
-                    const resultados = document.getElementById('resultado-screen');
-                    resultados.style.display = 'block';
-                    // Pequeña animación de entrada
-                    resultados.style.opacity = '0';
-                    setTimeout(() => { results.style.opacity = '1'; }, 50);
-                }, 200);
+        function intentarValidar() {
+            if (captchaEstaListo) {
+                // OCULTAR PANTALLA 1
+                document.getElementById('pantalla-inicio').style.display = 'none';
+                
+                // MOSTRAR PANTALLA 2
+                document.getElementById('pantalla-resultados').style.display = 'block';
+                
+                // CAMBIAR EL COLOR DE FONDO DEL BODY (Para que la segunda pantalla sea blanca)
+                document.body.style.backgroundColor = 'white';
+                
+                // IR AL PRINCIPIO DE LA PÁGINA
+                window.scrollTo(0, 0);
             } else {
-                errorMsg.style.display = 'block';
-                // Pequeña vibración visual si falla (opcional, simple con CSS/JS)
-                const btn = document.querySelector('.btn-validar');
-                btn.style.transform = 'translateX(2px)';
-                setTimeout(() => btn.style.transform = 'translateX(-2px)', 50);
-                setTimeout(() => btn.style.transform = 'translateX(0)', 100);
+                // MOSTRAR ERROR SI NO HIZO CLICK EN CAPTCHA
+                document.getElementById('mensaje-error').style.display = 'block';
             }
         }
     </script>
